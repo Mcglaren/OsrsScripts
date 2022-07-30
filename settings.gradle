@@ -1,5 +1,5 @@
-rootProject.name = 'Script Template'
+rootProject.name = 'OsrsBotScript'
 include ":OSRSBot"
 include ":DaxWalkerRSB"
-project(":OSRSBot").projectDir = file("../TestRSB")
+project(":OSRSBot").projectDir = file("../OsrsBot")
 project(":DaxWalkerRSB").projectDir = file("../DaxWalkerOSRSBot")

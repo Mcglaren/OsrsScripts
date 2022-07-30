@@ -7,11 +7,13 @@ import net.runelite.rsb.methods.Methods;
 import net.runelite.rsb.methods.NPCs;
 import net.runelite.rsb.script.Script;
 import net.runelite.rsb.script.ScriptManifest;
+import net.runelite.rsb.util.Timer;
 import net.runelite.rsb.wrappers.RSNPC;
 import net.runelite.rsb.wrappers.RSPath;
 import net.runelite.rsb.wrappers.subwrap.WalkerTile;
 
-import java.util.logging.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 @ScriptManifest(
         authors = { "Baby Future" }, name = "Basic Loop Bot", version = 0.1,
@@ -21,6 +23,8 @@ import java.util.logging.Logger;
         + "</body></html>"
 )
 public class Main extends Script {
+
+    private static Logger log = LoggerFactory.getLogger(Main.class);
 
     private final int MIN = random(250, 400); // Random minimum value for our loop
     private final int MAX = random(700, 900); // Random maximum value for our loop
@@ -39,41 +43,32 @@ public class Main extends Script {
             RSNPC chicken = NPCs.methods.npcs.getNearest("Chicken"); // Find the nearest chicken
             // If there's not an NPC available, let's walkt to the area
             if (chicken != null) {
-                Logger.getLogger(getClass().getName()).info("Chicken not null");
+                log.info("Chicken not null");
                 if (getMyPlayer() == null) // Let's make sure our local player isn't Null
                     return 100;
 
                 if (!chicken.isOnScreen() || (chicken.getLocation() != null && getMyPlayer().getLocation().distanceTo(chicken.getLocation()) > 10)) {
                     // We're a bit far, let's walk a little closer
                     RSPath pathToChicken = ctx.walking.getPath(chicken.getLocation()); // We could use DaxWalker here
-                    Logger.getLogger(getClass().getName()).info("Pathing to chicken");
+                    log.info("Pathing to chicken");
                     if (pathToChicken.traverse()) {
                         return random(1200, 2100);
                     }
                 } else if (!chicken.isInCombat() && !chicken.isInteractingWithLocalPlayer() && !getMyPlayer().isInCombat()) {
                     // We passed our checks, let's attack a chicken now
                     if (chicken.doAction("Attack")) {
-                        Logger.getLogger(getClass().getName()).info("Attack");
-                        // We successfully clicked attack
-                        // TODO ideally the API should support a waitUntil type method
-                        // i.e. you click attack and wait until your player is moving /
-                        // isAttacking() returns true
+                        log.info("Attacking chicken");
 
-                        Methods.sleep(700, 1200);
-                        if (!getMyPlayer().isIdle() || getMyPlayer().isInCombat()) {
-                            // Seems like our attack worked, we can exit
-                            return 0;
-                        }
+                        Timer.waitCondition(() -> !getMyPlayer().isIdle() || getMyPlayer().isInCombat(), 10000);
 
-                        // An alternative to the sleep and if statement
-                        /*do {
-                            Methods.sleep(700, 1200);
-                        } while (getMyPlayer().isLocalPlayerMoving());*/
+                        // Seems like our attack worked, we can exit
+                        return 0;
+
                     }
                 }
             } else {
                 // Chicken is null, we should find one
-                Logger.getLogger(getClass().getName()).info("Walking");
+                log.info("Walking");
                 DaxWalker.walkTo(chickenCoop);
             }
         }  catch (NullPointerException e) {
