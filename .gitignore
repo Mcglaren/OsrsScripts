@@ -1,2 +1,15 @@
 .gradle/
 build/
+
+# Osrsbot
+OSRSBot.jar
+
+# intellij
+.idea/
+
+# nvim 
+.classpath
+.project
+.settings/
+bin/
+

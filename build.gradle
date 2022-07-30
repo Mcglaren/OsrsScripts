@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat
 plugins {
     id 'java'
     id 'idea'
+    id 'eclipse'
 }
 
 allprojects {
