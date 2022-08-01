@@ -6,6 +6,7 @@ plugins {
     id 'java'
     id 'idea'
     id 'maven-publish'
+    id 'eclipse'
 }
 
 allprojects {
@@ -95,8 +96,8 @@ dependencies {
     testImplementation group: 'net.runelite', name:'jshell', version: runeLiteVersion
     //We want these both at compile and at runtime.
     //So we use implementation instead of compileOnly or runtimeOnly
-    // implementation project(":OSRSBot")
-    implementation 'com.github.OSRSB:OSRSBot:master-SNAPSHOT'
+    implementation project(":OSRSBot")
+    //implementation 'com.github.OSRSB:OSRSBot:master-SNAPSHOT'
     implementation 'com.github.OSRSB:DaxWalkerOSRSBot:master-SNAPSHOT'
     //implementation project(":DaxWalkerRSB")
 }
