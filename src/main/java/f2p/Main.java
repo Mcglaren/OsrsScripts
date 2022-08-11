@@ -2,8 +2,8 @@ package f2p;
 
 import dax_api.api_lib.DaxWalker;
 import dax_api.api_lib.models.DaxCredentials;
-import net.runelite.rsb.script.Script;
 import dax_api.api_lib.models.DaxCredentialsProvider;
+import net.runelite.rsb.script.Script;
 import net.runelite.rsb.script.ScriptManifest;
 
 import org.slf4j.LoggerFactory;
